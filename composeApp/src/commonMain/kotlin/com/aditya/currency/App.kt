@@ -14,13 +14,13 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Preview
 fun App() {
     MaterialTheme {
-        val greeting = remember { Greeting().greet() }
+        val homeViewModel = remember { HomeViewModel() }
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize(),
         ) {
             Text(
-                text = greeting,
+                text = homeViewModel.greeting,
             )
         }
     }

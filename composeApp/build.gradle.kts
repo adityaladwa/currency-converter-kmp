@@ -49,7 +49,6 @@ kotlin {
             implementation(libs.kotlin.coroutines)
             implementation(libs.kotlinx.datetime)
 
-
             //networking
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -57,6 +56,8 @@ kotlin {
 
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+
+            implementation(libs.koin.core)
         }
 
         iosMain.dependencies {
