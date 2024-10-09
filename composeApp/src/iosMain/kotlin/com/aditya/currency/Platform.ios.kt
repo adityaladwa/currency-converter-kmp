@@ -14,3 +14,5 @@ actual fun getPlatform(): Platform = IOSPlatform()
 actual fun initLogger() {
     Napier.base(DebugAntilog())
 }
+
+actual fun isiOS() = true

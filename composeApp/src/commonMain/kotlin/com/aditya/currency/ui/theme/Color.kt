@@ -1,4 +1,6 @@
 package com.aditya.currency.ui.theme
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF4C662B)
@@ -218,7 +220,10 @@ val surfaceContainerHighDarkHighContrast = Color(0xFF282B24)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF33362E)
 
 
-
+val headerColor
+    @Composable
+    get() = if (isSystemInDarkTheme()) Color(0xFF0C0C0C)
+    else Color(0xFF283556)
 
 
 
