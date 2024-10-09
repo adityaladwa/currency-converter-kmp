@@ -27,7 +27,7 @@ fun App() {
                 .background(MaterialTheme.colorScheme.primaryContainer),
         ) {
             Text(
-                text = rate.value,
+                text = rate.value.ifBlank { "Hello, ${getPlatform()}" },
             )
         }
     }
