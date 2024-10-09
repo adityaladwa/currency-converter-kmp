@@ -1,4 +1,4 @@
-package com.aditya.currency
+package com.aditya.currency.screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

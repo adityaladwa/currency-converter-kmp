@@ -1,6 +1,6 @@
 package com.aditya.currency.di
 
-import com.aditya.currency.HomeViewModel
+import com.aditya.currency.screen.HomeViewModel
 import com.aditya.currency.data.remote.RealCurrencyAPIService
 import com.aditya.currency.domain.CurrencyAPIService
 import io.github.aakira.napier.Napier

@@ -2,13 +2,8 @@ package com.aditya.currency.ui.theme
 
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
-import currency_converter.composeapp.generated.resources.Res
-import currency_converter.composeapp.generated.resources.bebas_nue_regular
-import org.jetbrains.compose.resources.Font
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -250,5 +245,3 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
-@Composable
-fun GetBebasFontFamily() = FontFamily(Font(Res.font.bebas_nue_regular))
