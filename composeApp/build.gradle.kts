@@ -23,7 +23,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "CurrencyComposeApp"
+            baseName = "CurrencyApp"
             isStatic = true
         }
     }
@@ -49,9 +49,13 @@ kotlin {
             implementation(libs.kotlin.coroutines)
             implementation(libs.kotlinx.datetime)
 
+            //logging
+            implementation(libs.napier)
+
             //networking
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.logging)
             implementation(libs.ktor.serialization.kotlinx.json)
 
             implementation(libs.androidx.lifecycle.viewmodel)
