@@ -31,13 +31,13 @@ fun HomeScreen(
             is Response.Error -> Napier.e("Error fetching currency", res.error)
             Response.Loading -> Napier.d("Loading")
             is Response.Success -> {
-                val fromRate = round(res.data.currency["inr"]?.times(1000) ?: 0.00) / 1000
-                val toRate = fromRate.let { 1.00.div(fromRate) }
+                val fromRateRounded = round(res.data.currency["inr"]?.times(1000) ?: 0.00) / 1000
+                val toRate = fromRateRounded.let { 1.00.div(fromRateRounded) }
                 val toRateRounded = round(toRate * 1000) / 1000
-                val convertedAmount = fromRate.times(20.00)
+                val convertedAmountRounded = round(fromRateRounded.times(20.00) * 1000) / 1000
                 ConversionText(
-                    convertedAmount.toString(),
-                    fromRate.toString(),
+                    convertedAmountRounded.toString(),
+                    fromRateRounded.toString(),
                     toRateRounded.toString()
                 )
             }
