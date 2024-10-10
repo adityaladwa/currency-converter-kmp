@@ -43,8 +43,3 @@ val viewModelModule = module {
     }
 }
 
-fun initializeKoin() {
-    startKoin {
-        modules(appModule, viewModelModule)
-    }
-}

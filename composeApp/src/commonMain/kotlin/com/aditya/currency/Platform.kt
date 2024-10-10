@@ -7,5 +7,3 @@ interface Platform {
 expect fun getPlatform(): Platform
 
 expect fun isiOS(): Boolean
-
-expect fun initLogger()

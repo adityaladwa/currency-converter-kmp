@@ -5,7 +5,7 @@ import CurrencyApp
 struct iOSApp: App {
     
     init() {
-        CurrencyApp.KoinModuleKt.initializeKoin()
+        Initializer().doInitAll()
     }
   
     var body: some Scene {
