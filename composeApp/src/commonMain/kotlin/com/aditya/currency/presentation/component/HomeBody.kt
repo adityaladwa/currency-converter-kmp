@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,19 +19,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aditya.currency.ui.theme.headerColor
-import com.aditya.currency.ui.theme.primaryLight
 import com.aditya.currency.utils.GetBebasFontFamily
-import currency_converter.composeapp.generated.resources.Res
-import currency_converter.composeapp.generated.resources.bebas_nue_regular
-import org.jetbrains.compose.resources.Font
 
 @Composable
-fun ConversionText(rate: String) {
+fun ConversionText(convertedAmount: String, fromRate: String, toRate: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -43,11 +38,26 @@ fun ConversionText(rate: String) {
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = rate.ifBlank { "Hello, World" },
+                text = convertedAmount,
                 fontSize = 60.sp,
                 textAlign = TextAlign.Center,
                 color = if (isSystemInDarkTheme()) Color.White else Color.Black,
                 fontFamily = GetBebasFontFamily()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = fromRate,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center,
+                color = if (isSystemInDarkTheme()) Color.White else Color.Black
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = toRate,
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center,
+                color = if (isSystemInDarkTheme()) Color.White else Color.Black
             )
         }
         Button(
