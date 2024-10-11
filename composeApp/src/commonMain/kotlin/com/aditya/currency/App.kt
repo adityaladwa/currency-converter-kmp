@@ -9,7 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aditya.currency.presentation.screen.HomeScreen
+import androidx.navigation.toRoute
+import com.aditya.currency.domain.CurrencyCode
+import com.aditya.currency.domain.CurrencyType
+import com.aditya.currency.presentation.screen.currency.CurrencyPickerScreen
+import com.aditya.currency.presentation.screen.home.HomeScreen
 import io.github.aakira.napier.Napier
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -25,10 +29,17 @@ fun App() {
         Surface {
             NavHost(
                 navController = navController,
-                startDestination = Home
+                startDestination = HomeRoute
             ) {
-                composable<Home> {
-                    HomeScreen()
+                composable<HomeRoute> {
+                    HomeScreen {
+                        navController.navigate(CurrencyPickerRoute(CurrencyCode.USD))
+                    }
+                }
+                composable<CurrencyPickerRoute> { backstack ->
+                    val currencyType = backstack.toRoute<CurrencyPickerRoute>().currencyType
+                    Napier.d("Currency type: $currencyType")
+                    CurrencyPickerScreen(CurrencyType.None)
                 }
             }
         }
@@ -36,4 +47,11 @@ fun App() {
 }
 
 @Serializable
-data object Home
+data object HomeRoute
+
+
+@Serializable
+data class CurrencyPickerRoute(
+    val currencyType: CurrencyCode
+)
+

@@ -1,4 +1,4 @@
-package com.aditya.currency.presentation.screen
+package com.aditya.currency.presentation.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

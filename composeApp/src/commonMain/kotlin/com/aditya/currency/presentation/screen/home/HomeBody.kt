@@ -1,4 +1,4 @@
-package com.aditya.currency.presentation.component
+package com.aditya.currency.presentation.screen.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme

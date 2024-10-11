@@ -1,4 +1,4 @@
-package com.aditya.currency.presentation.component
+package com.aditya.currency.presentation.screen.home
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.aditya.currency.domain.CurrencyCode
+import com.aditya.currency.domain.CurrencyType
 import com.aditya.currency.isiOS
 import currency_converter.composeapp.generated.resources.Res
 import currency_converter.composeapp.generated.resources.exchange_illustration
@@ -39,7 +40,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun HomeHeader() {
+fun HomeHeader(
+    onClick: (currencyType: CurrencyType) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -61,14 +64,16 @@ fun HomeHeader() {
             Spacer(modifier = Modifier.width(12.dp))
         }
         Spacer(modifier = Modifier.height(24.dp))
-        CurrencyInput()
+        CurrencyInput { onClick(it) }
         Spacer(modifier = Modifier.height(24.dp))
         AmountInput(20.00, { d -> })
     }
 }
 
 @Composable
-fun CurrencyInput() {
+fun CurrencyInput(
+    onClick: (currencyType: CurrencyType) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -76,13 +81,13 @@ fun CurrencyInput() {
         CurrencyView(
             label = "From",
             currencyCode = CurrencyCode.USD,
-            onClick = {}
+            onClick = { onClick(CurrencyType.Source(CurrencyCode.USD)) }
         )
         Spacer(modifier = Modifier.width(14.dp))
         CurrencyView(
             label = "To",
             currencyCode = CurrencyCode.INR,
-            onClick = {}
+            onClick = { onClick(CurrencyType.Target(CurrencyCode.INR)) }
         )
     }
 }
@@ -163,10 +168,4 @@ fun AmountInput(
             keyboardType = KeyboardType.Decimal
         )
     )
-}
-
-@Preview
-@Composable
-fun HomeHeaderPreview() {
-    HomeHeader()
 }

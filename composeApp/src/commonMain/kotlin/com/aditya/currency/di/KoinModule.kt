@@ -1,6 +1,6 @@
 package com.aditya.currency.di
 
-import com.aditya.currency.presentation.screen.HomeViewModel
+import com.aditya.currency.presentation.screen.home.HomeViewModel
 import com.aditya.currency.data.remote.RealCurrencyAPIService
 import com.aditya.currency.domain.CurrencyAPIService
 import io.github.aakira.napier.Napier
@@ -11,7 +11,6 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 val appModule = module {
