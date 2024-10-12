@@ -22,6 +22,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,11 +38,13 @@ import com.aditya.currency.domain.CurrencyType
 import com.aditya.currency.isiOS
 import currency_converter.composeapp.generated.resources.Res
 import currency_converter.composeapp.generated.resources.exchange_illustration
+import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun HomeHeader(
+    source: StateFlow<CurrencyCode>,
+    target: StateFlow<CurrencyCode>,
     onClick: (currencyType: CurrencyType) -> Unit
 ) {
     Column(
@@ -64,7 +68,7 @@ fun HomeHeader(
             Spacer(modifier = Modifier.width(12.dp))
         }
         Spacer(modifier = Modifier.height(24.dp))
-        CurrencyInput { onClick(it) }
+        CurrencyInput(source, target) { onClick(it) }
         Spacer(modifier = Modifier.height(24.dp))
         AmountInput(20.00, { d -> })
     }
@@ -72,21 +76,25 @@ fun HomeHeader(
 
 @Composable
 fun CurrencyInput(
+    source: StateFlow<CurrencyCode>,
+    target: StateFlow<CurrencyCode>,
     onClick: (currencyType: CurrencyType) -> Unit
 ) {
+    val sourceFlow by source.collectAsState()
+    val targetFlow by target.collectAsState()
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         CurrencyView(
             label = "From",
-            currencyCode = CurrencyCode.USD,
+            currencyCode = sourceFlow,
             onClick = { onClick(CurrencyType.Source(CurrencyCode.USD)) }
         )
         Spacer(modifier = Modifier.width(14.dp))
         CurrencyView(
             label = "To",
-            currencyCode = CurrencyCode.INR,
+            currencyCode = targetFlow,
             onClick = { onClick(CurrencyType.Target(CurrencyCode.INR)) }
         )
     }

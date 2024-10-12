@@ -4,10 +4,8 @@ import androidx.compose.runtime.Composable
 import com.aditya.currency.domain.CurrencyType
 
 @Composable
-fun CurrencyPickerScreen(currencyType: CurrencyType) {
-    CurrencyPickerDialog(
-        onDismiss = { },
-        currencyType = currencyType,
-        onConfirmClick = {}
-    )
+fun CurrencyPickerScreen(
+    currencyType: CurrencyType
+) {
+
 }

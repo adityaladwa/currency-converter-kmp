@@ -9,10 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.aditya.currency.domain.CurrencyCode
-import com.aditya.currency.domain.CurrencyType
-import com.aditya.currency.presentation.screen.currency.CurrencyPickerScreen
 import com.aditya.currency.presentation.screen.home.HomeScreen
 import io.github.aakira.napier.Napier
 import kotlinx.serialization.Serializable
@@ -32,14 +28,7 @@ fun App() {
                 startDestination = HomeRoute
             ) {
                 composable<HomeRoute> {
-                    HomeScreen {
-                        navController.navigate(CurrencyPickerRoute(CurrencyCode.USD))
-                    }
-                }
-                composable<CurrencyPickerRoute> { backstack ->
-                    val currencyType = backstack.toRoute<CurrencyPickerRoute>().currencyType
-                    Napier.d("Currency type: $currencyType")
-                    CurrencyPickerScreen(CurrencyType.None)
+                    HomeScreen()
                 }
             }
         }
@@ -48,10 +37,4 @@ fun App() {
 
 @Serializable
 data object HomeRoute
-
-
-@Serializable
-data class CurrencyPickerRoute(
-    val currencyType: CurrencyCode
-)
 
