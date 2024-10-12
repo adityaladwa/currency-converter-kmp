@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aditya.currency.presentation.screen.HomeScreen
+import com.aditya.currency.presentation.screen.home.HomeScreen
 import io.github.aakira.napier.Napier
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -25,9 +25,9 @@ fun App() {
         Surface {
             NavHost(
                 navController = navController,
-                startDestination = Home
+                startDestination = HomeRoute
             ) {
-                composable<Home> {
+                composable<HomeRoute> {
                     HomeScreen()
                 }
             }
@@ -36,4 +36,5 @@ fun App() {
 }
 
 @Serializable
-data object Home
+data object HomeRoute
+
