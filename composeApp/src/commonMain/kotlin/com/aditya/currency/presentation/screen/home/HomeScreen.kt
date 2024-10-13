@@ -2,6 +2,9 @@ package com.aditya.currency.presentation.screen.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -10,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.aditya.currency.domain.CurrencyType
 import com.aditya.currency.domain.Response
 import com.aditya.currency.presentation.screen.currency.CurrencyPickerDialog
@@ -20,7 +24,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel()
 ) {
-    val response by remember { homeViewModel.getRate() }.collectAsState()
+    val response by remember { homeViewModel.rateFlow }.collectAsState()
     val sourceCurrency by remember { homeViewModel.sourceCurrencyCode }.collectAsState()
     val targetCurrency by remember { homeViewModel.targetCurrencyCode }.collectAsState()
     var amount by remember { mutableStateOf(20.0) }
@@ -53,7 +57,14 @@ fun HomeScreen(
         )
         when (val res = response) {
             is Response.Error -> Napier.e("Error fetching currency", res.error)
-            Response.Loading -> Napier.d("Loading")
+            Response.Loading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .padding(16.dp)
+                )
+            }
+
             is Response.Success -> {
                 with(homeViewModel.convertToString(res, amount)) {
                     ConversionText(

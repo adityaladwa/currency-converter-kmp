@@ -7,10 +7,13 @@ import com.aditya.currency.domain.CurrencyAPIService
 import com.aditya.currency.domain.CurrencyCode
 import com.aditya.currency.domain.Response
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
@@ -38,17 +41,22 @@ class HomeViewModel(
                 initialValue = CurrencyCode.USD
             )
 
-    fun getRate(): StateFlow<Response<SymbolResponseDTO>> {
-        val fromSymbol = _sourceCurrencyCode.value.name
-        return flow {
-            emit(api.getCurrency(fromSymbol))
-        }.flowOn(Dispatchers.IO)
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = Response.Loading
-            )
-    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val rateFlow: StateFlow<Response<SymbolResponseDTO>> =
+        combine(_sourceCurrencyCode) { source ->
+            source
+        }.flatMapLatest {
+            flow {
+                emit(Response.Loading)
+                val fromSymbol = _sourceCurrencyCode.value.name
+                emit(api.getCurrency(fromSymbol))
+            }.flowOn(Dispatchers.IO)
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = Response.Loading
+        )
+
 
     fun setSourceCurrency(currencyCode: CurrencyCode) {
         _sourceCurrencyCode.value = currencyCode
