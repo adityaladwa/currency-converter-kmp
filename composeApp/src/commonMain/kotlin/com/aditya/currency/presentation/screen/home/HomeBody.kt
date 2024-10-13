@@ -1,5 +1,10 @@
 package com.aditya.currency.presentation.screen.home
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -23,9 +28,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aditya.currency.utils.GetBebasFontFamily
+import io.github.aakira.napier.Napier
 
 @Composable
-fun ConversionText(convertedAmount: String, fromRate: String, toRate: String) {
+fun ConversionText(
+    convertedAmount: String,
+    fromRate: String,
+    toRate: String,
+    isConvertedAmountVisible: Boolean
+) {
+    Napier.d { "ConversionText $convertedAmount $fromRate $toRate" }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,14 +48,21 @@ fun ConversionText(convertedAmount: String, fromRate: String, toRate: String) {
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = convertedAmount,
-                fontSize = 60.sp,
-                textAlign = TextAlign.Center,
-                color = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                fontFamily = GetBebasFontFamily()
-            )
+            AnimatedVisibility(
+                visible = isConvertedAmountVisible,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = convertedAmount,
+                    fontSize = 60.sp,
+                    textAlign = TextAlign.Center,
+                    color = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                    fontFamily = GetBebasFontFamily()
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),

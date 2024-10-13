@@ -22,8 +22,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,14 +40,15 @@ import com.aditya.currency.domain.CurrencyType
 import com.aditya.currency.isiOS
 import currency_converter.composeapp.generated.resources.Res
 import currency_converter.composeapp.generated.resources.exchange_illustration
-import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun HomeHeader(
-    source: StateFlow<CurrencyCode>,
-    target: StateFlow<CurrencyCode>,
-    onClick: (currencyType: CurrencyType) -> Unit
+    amount: Double,
+    source: CurrencyCode,
+    target: CurrencyCode,
+    onClick: (currencyType: CurrencyType) -> Unit,
+    onAmountChange: (Double?) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -70,31 +73,29 @@ fun HomeHeader(
         Spacer(modifier = Modifier.height(24.dp))
         CurrencyInput(source, target) { onClick(it) }
         Spacer(modifier = Modifier.height(24.dp))
-        AmountInput(20.00, { d -> })
+        AmountInput(amount) { d -> onAmountChange(d) }
     }
 }
 
 @Composable
 fun CurrencyInput(
-    source: StateFlow<CurrencyCode>,
-    target: StateFlow<CurrencyCode>,
+    source: CurrencyCode,
+    target: CurrencyCode,
     onClick: (currencyType: CurrencyType) -> Unit
 ) {
-    val sourceFlow by source.collectAsState()
-    val targetFlow by target.collectAsState()
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         CurrencyView(
             label = "From",
-            currencyCode = sourceFlow,
+            currencyCode = source,
             onClick = { onClick(CurrencyType.Source(CurrencyCode.USD)) }
         )
         Spacer(modifier = Modifier.width(14.dp))
         CurrencyView(
             label = "To",
-            currencyCode = targetFlow,
+            currencyCode = target,
             onClick = { onClick(CurrencyType.Target(CurrencyCode.INR)) }
         )
     }
@@ -143,17 +144,19 @@ fun RowScope.CurrencyView(
 
 @Composable
 fun AmountInput(
-    amount: Double,
-    onAmountChange: (Double) -> Unit
+    amt: Double,
+    onAmountChange: (Double?) -> Unit
 ) {
+    var amount by remember { mutableStateOf(amt.toString()) }
     TextField(
         modifier = Modifier.fillMaxWidth()
             .clip(RoundedCornerShape(size = 8.dp))
             .animateContentSize()
             .height(54.dp),
-        value = "$amount",
+        value = amount,
         onValueChange = {
-            onAmountChange(it.toDouble())
+            amount = it
+            onAmountChange(it.toDoubleOrNull())
         },
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.White.copy(alpha = 0.05f),

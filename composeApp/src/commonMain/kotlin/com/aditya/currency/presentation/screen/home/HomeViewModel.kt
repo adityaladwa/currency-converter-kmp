@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
+import kotlin.math.round
 
 class HomeViewModel(
     private val api: CurrencyAPIService
@@ -56,4 +57,27 @@ class HomeViewModel(
     fun setTargetCurrency(currencyCode: CurrencyCode) {
         _targetCurrencyCode.value = currencyCode
     }
+
+    fun convertToString(
+        response: Response.Success<SymbolResponseDTO>,
+        amount: Double
+    ): ConvertedAmount {
+        val fromRateRounded = round(
+            response.data.currency[targetCurrencyCode.value.name.lowercase()]?.times(1000) ?: 0.00
+        ) / 1000
+        val toRate = fromRateRounded.let { 1.00.div(fromRateRounded) }
+        val toRateRounded = round(toRate * 1000) / 1000
+        val convertedAmountRounded = round(fromRateRounded.times(amount) * 1000) / 1000
+        return ConvertedAmount(
+            convertedAmountRounded,
+            "1 ${sourceCurrencyCode.value.name} = $toRateRounded ${targetCurrencyCode.value.name}",
+            "1 ${targetCurrencyCode.value.name} = $fromRateRounded ${sourceCurrencyCode.value.name}"
+        )
+    }
+
+    data class ConvertedAmount(
+        val convertedAmountRounded: Double,
+        val fromRateRounded: String,
+        val toRateRounded: String
+    )
 }
