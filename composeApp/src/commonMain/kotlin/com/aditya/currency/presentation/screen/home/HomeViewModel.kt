@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlin.math.round
 
 class HomeViewModel(
@@ -59,11 +60,11 @@ class HomeViewModel(
 
 
     fun setSourceCurrency(currencyCode: CurrencyCode) {
-        _sourceCurrencyCode.value = currencyCode
+        _sourceCurrencyCode.update { currencyCode }
     }
 
     fun setTargetCurrency(currencyCode: CurrencyCode) {
-        _targetCurrencyCode.value = currencyCode
+        _targetCurrencyCode.update { currencyCode }
     }
 
     fun convertToString(
